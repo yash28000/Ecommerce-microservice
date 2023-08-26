@@ -1,18 +1,24 @@
 # Build stage
 FROM python:3.9-slim-buster as builder
 
+# Set environment variables to optimize Python behavior
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
 
+# Set the working directory
 WORKDIR /working
 
-COPY requirements.txt /working/
+# Upgrade pip to the latest version
 RUN pip install --upgrade pip
+
+# Install necessary Python packages
 RUN pip install flask flask_sqlalchemy flask_login flask_bcrypt flask_wtf wtforms email_validator
 
-
+# Copy the contents of the current directory into the container's working directory
 COPY . /working/
 
+# Expose port 5000 to allow communication
 EXPOSE 5000
 
+# Specify the command to run when the container starts
 CMD ["sh", "run.sh"]
