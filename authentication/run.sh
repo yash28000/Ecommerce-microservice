@@ -1,7 +1,3 @@
-#!/bin/bash
-
-# Create tables
+#!bin/sh
 python create_table.py
-
-# Start the application
 python app.py
