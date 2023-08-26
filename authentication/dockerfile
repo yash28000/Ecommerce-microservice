@@ -8,7 +8,6 @@ ENV PYTHONUNBUFFERED 1
 # Set the working directory
 WORKDIR /working
 
-# Upgrade pip to the latest version
 RUN pip install --upgrade pip
 
 # Install necessary Python packages
