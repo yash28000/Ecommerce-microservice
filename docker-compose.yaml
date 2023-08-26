@@ -4,3 +4,7 @@ services:
     build: ./authentication
     ports:
       - "5000:5000"
+  product_service:
+    build: ./Product_service
+    ports:
+      - "5010:5010"
