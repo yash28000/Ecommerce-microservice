@@ -37,8 +37,9 @@ def add_product():
         name = request.form.get('name')
         description = request.form.get('description')
         price = float(request.form.get('price'))
+        image = request.form.get('image')
         # Create a new Product object and add to the database
-        product = Product(p_id=p_id ,name=name, description=description, price=price)
+        product = Product(p_id=p_id ,name=name, description=description, price=price, image=image)
         db.session.add(product)
         db.session.commit()
         # Redirect to the list of products

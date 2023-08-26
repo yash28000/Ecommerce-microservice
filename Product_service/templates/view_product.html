@@ -7,6 +7,17 @@
     <h1>{{ product.name }}</h1>
     <p>Description: {{ product.description }}</p>
     <p>Price: ${{ product.price }}</p>
+    
+    <div class="card" style="width: 18rem;">
+        {% if product.image %}
+            <img src="{{ url_for('static', filename='images/' + product.image) }}" class="card-img-top" alt="{{ product.name }}" style="max-width: 100px; max-height: 100px;">
+        {% else %}
+            <div class="card-body">
+                <p class="card-text">No image available</p>
+            </div>
+        {% endif %}
+    </div>
+
     <a href="{{ url_for('product.list_products') }}">Back to Products</a>
 </body>
 </html>

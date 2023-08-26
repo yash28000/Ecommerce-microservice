@@ -7,6 +7,7 @@ class Product(db.Model):
     name = db.Column(db.String(100), nullable=False)
     description = db.Column(db.String(500))
     price = db.Column(db.Float, nullable=False)
+    image =db.Column(db.String(100), nullable=False)
 
     def __repr__(self):
-        return f"Product(p_id={self.p_id}, name='{self.name}', price={self.price})"
+        return f"Product(p_id={self.p_id}, name='{self.name}', price={self.price} , image='{self.image}')"
