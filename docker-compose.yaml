@@ -5,10 +5,10 @@ services:
     ports:
       - "5000:5000"
     volumes:
-      - ./Database/auth:/python-api/instance
+      - ./Database/authentication:/python-api/instance
   product_service:
     build: ./Product_service
     ports:
       - "5010:5010"
     volumes:
-      - ./Database/products:/python-api/instance
+      - ./Database/Product_service:/python-api/instance
