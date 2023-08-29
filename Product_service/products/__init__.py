@@ -9,4 +9,5 @@ db = SQLAlchemy(app)
 app.app_context().push()
 ma = Marshmallow(app)
 bcypt = Bcrypt()
+
 from products import routes
