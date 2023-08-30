@@ -2,19 +2,33 @@ from flask import request, jsonify
 from products import app, db, ma
 from products.models import Product , Images
 from werkzeug.utils import secure_filename
-import os
+import base64
 
 class ProductSchema(ma.Schema):
     class Meta:
         fields = ("p_id", "name", "description", "price", "quantity" ,"rating")
 product_schema = ProductSchema(many=True)
 
+
 class ImageSchema(ma.Schema):
     class Meta:
-        fields = ("p_id","image_name")
+        fields = ("p_id", "image", "image_present")
+
+    def get_image_data(self, obj):
+        if obj.image:
+            return {
+                "p_id": obj.p_id,
+                "image_name": obj.image_name,
+                "image": base64.b64encode(obj.image).decode("utf-8"),
+            }
+        return None
+
+    image = ma.Method("get_image_data")
+
 image_schema = ImageSchema(many=True)
 
 
+      
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
@@ -87,36 +101,27 @@ def add_image(p_id):
         temp = Images(p_id,img,image_name)
         db.session.add(temp)
         db.session.commit()
-        return image_schema.jsonify(p_id,image_name)
+        return image_schema.jsonify(p_id,image_name,img)
  
     elif request.method == 'GET': 
-        temp = Images.query.filter_by(p_id=p_id).all()
-        f = image_schema.dump(temp)
-        return print(temp)
- 
-    elif request.method == 'PUT':
-        p_id = request.args.get('p_id')
-        temp = Images.query.get(p_id)
-        if 'image' in request.files:
-            image = request.files['image']
-        if image and allowed_file(image.filename):
-            filename = secure_filename(image.filename)
-            image_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
-            image.save(image_path)
-            temp.image = image_path
-        temp.p_id = p_id
-        db.session.commit()
-        return image_schema.jsonify(temp)
+        imag = Images.query.filter_by(p_id=p_id).all()
+        images_data = image_schema.dump(imag)
+        return jsonify(images_data)
     
     elif request.method == 'DELETE':
-        p_id = request.args.get('p_id')
-        add_temp = Images.query.get(p_id)
-        if add_temp:
-            db.session.delete(add_temp)
+        imag = Images.query.get(p_id)
+        if imag:
+            db.session.delete(imag)
             db.session.commit()
-            return jsonify({"sucess": True})
+            return jsonify({"message": "Image deleted successfully"}), 200
         else:
-            return jsonify({"success": False})
-    
+            return jsonify({"message": "Image not found"}), 404
+@app.route('/allimages',methods=['GET'])
+def getimages():
+    if request.method=='GET':
+       imag = Images.query.all()
+       images_data = image_schema.dump(imag)
+       return jsonify(images_data)
+     
 if __name__ == '__main__':
     app.run(debug=True)
