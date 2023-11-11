@@ -1,0 +1,48 @@
+version: '3'
+services:
+  auth:
+    image: auth_api:0.1
+    container_name: auth
+    build: ./Auth
+    ports:
+      - 5001:5000
+    volumes:
+      - ./Database/auth:/python-api/instance
+  products:
+    image: product_api:0.1
+    build: ./Products_Catalog
+    container_name: products
+    ports:
+      - 5002:5000
+    volumes:
+      - ./Database/products:/python-api/instance
+  cart:
+    image: cart_api:0.1
+    build: ./Cart
+    ports:
+      - 5003:5000
+    volumes: 
+      - ./Database/cart:/python-api/instance
+  images:
+    image: image_api:0.1
+    build: ./Images
+    ports:
+      - 5004:5000
+    volumes:
+      - ./Database/images:/python-api/instance
+  nginx:
+    image: nginx:latest
+    ports: 
+      - 8080:80
+    volumes:
+      - ./conf/default.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - auth
+      - cart
+      - products
+      - images
+    links:
+      - auth
+      - cart
+      - products
+      - images
