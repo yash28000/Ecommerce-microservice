@@ -16,6 +16,12 @@ services:
       - 5002:5000
     volumes:
       - ./Database/products:/python-api/instance
+  frontend:
+    image: frontend_app:0.1
+    build: ./frontend
+    container_name: frontend
+    ports:
+      - 8081:3000 
   cart:
     image: cart_api:0.1
     build: ./Cart
