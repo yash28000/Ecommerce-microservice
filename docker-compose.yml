@@ -1,42 +1,62 @@
 version: '3'
 services:
+  network-creator:
+    image: busybox
+    command: ["sh", "-c", "docker network create ecom"]
+    networks:
+      - default
   auth:
+    networks:
+     - ecom
     image: auth_api:0.1
     container_name: auth
     build: ./Auth
     ports:
       - 5001:5000
-    volumes:
-      - ./Database/auth:/python-api/instance
+    depends_on:
+      - network-creator
   products:
+    networks:
+       - ecom
     image: product_api:0.1
     build: ./Products_Catalog
     container_name: products
     ports:
       - 5002:5000
-    volumes:
-      - ./Database/products:/python-api/instance
+    depends_on:
+      - network-creator
   frontend:
+    networks:
+     - ecom
     image: frontend_app:0.1
     build: ./frontend
     container_name: frontend
     ports:
       - 8081:3000 
+    depends_on:
+      - network-creator
   cart:
+    networks:
+     - ecom
     image: cart_api:0.1
     build: ./Cart
     ports:
       - 5003:5000
-    volumes: 
-      - ./Database/cart:/python-api/instance
+    depends_on:
+      - network-creator
   images:
+    networks:
+     - ecom
     image: image_api:0.1
     build: ./Images
+    container_name: images
     ports:
       - 5004:5000
-    volumes:
-      - ./Database/images:/python-api/instance
+    depends_on:
+      - network-creator
   nginx:
+    networks:
+     - ecom
     image: nginx:latest
     ports: 
       - 8080:80
@@ -47,8 +67,25 @@ services:
       - cart
       - products
       - images
+      - network-creator
     links:
       - auth
       - cart
       - products
       - images
+
+  postgres:
+    networks:
+      - ecom
+    image: postgres
+    container_name: db
+    environment:
+      POSTGRES_DB: ecomdb
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 123123
+    volumes:
+      - ./postgres-data:/var/lib/postgresql/data
+
+networks:
+  ecom:
+    external: true
