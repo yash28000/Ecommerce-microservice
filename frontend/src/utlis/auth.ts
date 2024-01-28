@@ -5,7 +5,7 @@ interface formData{
 }
 export const getUserAuth = (formData: formData):any =>{
     console.log(formData)
-    const data = fetch(`http://localhost:8080/user/auth`,{
+    const data = fetch(`${process.env.NEXT_PUBLIC_API_URL}user/auth`,{
         method: 'POST',
         headers:{
             'Content-type':'application/json', 
@@ -22,7 +22,7 @@ export const getUserAuth = (formData: formData):any =>{
 }
 export const registerUserAuth = (formData: formData):any =>{
     console.log(formData)
-    const data = fetch(`http://localhost:8080/user/`,{
+    const data = fetch(`${process.env.NEXT_PUBLIC_API_URL}user/`,{
         method: 'POST',
         headers:{
             'Content-type':'application/json', 
