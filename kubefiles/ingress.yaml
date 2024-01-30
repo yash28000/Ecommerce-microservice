@@ -23,25 +23,26 @@ spec:
               service:
                 name: auth-service
                 port:
-                  number: 81
+                  number: 80
           - path: /product(/|$)(.*)
             pathType: ImplementationSpecific
             backend:
               service:
                 name: product-service
                 port:
-                  number: 81
+                  number: 80
           - path: /cart(/|$)(.*)
             pathType: ImplementationSpecific
             backend:
               service:
                 name: cart-service
                 port:
-                  number: 81
+                  number: 80
           - path: /image(/|$)(.*)
             pathType: ImplementationSpecific
             backend:
               service:
                 name: image-service
                 port:
-                  number: 81
+                  number: 80
+          

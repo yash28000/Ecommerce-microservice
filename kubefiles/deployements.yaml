@@ -32,7 +32,7 @@ spec:
     app: auth
   ports:
   - protocol: TCP 
-    port: 81
+    port: 80
     targetPort: 5000
   
 ---
@@ -68,7 +68,7 @@ spec:
     app: cart
   ports:
   - protocol: TCP 
-    port: 81
+    port: 80
     targetPort: 5000
 
 ---
@@ -104,7 +104,7 @@ spec:
     app: product
   ports:
   - protocol: TCP 
-    port: 81
+    port: 80
     targetPort: 5000
 
 ---
@@ -141,7 +141,7 @@ spec:
     app: image
   ports:
   - protocol: TCP 
-    port: 81
+    port: 80
     targetPort: 5000
   
 ---
@@ -165,8 +165,8 @@ spec:
         ports:
         - containerPort: 3000
         env:
-          - name:  NEXT_PUBLIC_API
-            value: "http://localhost:81/"
+          - name:  NEXT_PUBLIC_API_URL
+            value: "http://nginx-service:8080/"
 
 ---
 apiVersion: v1
@@ -174,8 +174,49 @@ kind: Service
 metadata:
   name: client-service
 spec:
+  type: NodePort
   selector:
     app: client
   ports:
   - port: 8081
     targetPort: 3000
+    nodePort: 30007
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nginx
+  template:
+    metadata:
+      labels:
+        app: nginx
+    spec:
+      containers:
+      - name: nginx
+        image: nginx:latest
+        ports:
+        - containerPort: 80
+        volumeMounts:
+        - name: config-volume
+          mountPath: /etc/nginx/conf.d
+      volumes:
+      - name: config-volume
+        configMap:
+          name: nginx-config
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx-service
+spec:
+  selector:
+    app: nginx
+  ports:
+  - protocol: TCP
+    port: 8080
+    targetPort: 80
