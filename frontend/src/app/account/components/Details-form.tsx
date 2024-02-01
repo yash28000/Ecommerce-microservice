@@ -9,7 +9,7 @@ export default function DetailsForm({id}: {id:string | null}){
         <h1 className="px-10 text-2xl font-bold my-5"> User Details</h1>
         <form className="flex items-center gap-10">
             <div className="w-[200px] h-[200px] rounded-full relative">
-            <img src={`http://localhost:8080/image/img?id=${userDetails.id}&name=${userDetails.username}&name=user`} className="w-full h-full object-cover rounded-full"/>
+            <img src={`${process.env.NEXT_PUBLIC_API}image/img?id=${userDetails.id}&name=${userDetails.username}&name=user`} className="w-full h-full object-cover rounded-full"/>
             <ImageUploader>
             <Button variant="ghost" className="absolute right-0 bottom-2">
             <AiFillCamera size={30}/>

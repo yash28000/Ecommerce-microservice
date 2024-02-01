@@ -36,13 +36,13 @@ export default function Navbar() {
                         </h3>
                     )}
 
-
-                    <button>
+                        {auth && (<button>
                         <CartHover>
                         <Link href="/cart"><AiOutlineShoppingCart size={25} /></Link>
                         </CartHover>
 
-                    </button>
+                    </button>)}
+                    
                 </span>
             </div>
             <hr className='w-full h-1 font-extralight' />

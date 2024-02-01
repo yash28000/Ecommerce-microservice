@@ -19,9 +19,10 @@ export default function Card ({params}:{params: CardData}){
         const objData={
             user_id : u_id,
             p_id: params.id,
-            qty: 1
+            qty: 1,
+            price: params.price
         }
-        const data = await fetch('http://localhost:8080/cart/',{
+        const data = await fetch(`${process.env.NEXT_PUBLIC_API}cart/`,{
             method: 'POST',
             body: JSON.stringify(objData),
             headers:{
@@ -47,10 +48,10 @@ export default function Card ({params}:{params: CardData}){
     return(
         <>
         
-        <div className="max-w-[250px] min-w-[200px] h-fit w-full  shadow-sm outline-gray-400 rounded-sm">
+        <div className="max-w-[320px] sm:max-w-[250px] min-w-[200px] h-fit w-full  shadow-sm outline-gray-400 rounded-sm">
             <Link href={`/product/${params.id}`} className=" flex flex-col">
             <span className="flex flex-col justify-center">
-                <img src={`http://localhost:8080/image/img?id=${params.id}&name=${params.name}&type=product`} className=" w-full h-40 object-cover rounded-md"/>
+                <img src={`${process.env.NEXT_PUBLIC_API}image/img?id=${params.id}&name=${params.name}&type=product`} className=" w-full h-40 object-cover rounded-md"/>
                 <h3 className="my-1 font-semibold text-xl px-3 capitalize">{wordlimiter(params.name,20)}</h3>
             </span>
             <span className="flex items-center space-x-2 px-3 text-sm my-1">

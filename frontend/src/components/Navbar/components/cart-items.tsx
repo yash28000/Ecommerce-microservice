@@ -24,7 +24,7 @@ export default function CartItems() {
     })
    useEffect(()=>{
     refetch()
-   },[])
+   },[refetch])
     const handleDelete = async (id: number) => {
         const data = await fetch(`http://localhost:8080/cart/cart?id=${id}`, {
             method: 'DELETE'
@@ -48,7 +48,7 @@ export default function CartItems() {
 
 
                     {/* items for the cart */}
-                    {data ? data?.map((item: any, key: any) => (
+                    {data ? data?.cart_data?.map((item: any, key: any) => (
                         <Cart_item key={key} params={item} handleDelete={handleDelete} />
                     )) : isFetching ?(
                         <span className='w-10 h-10 animate-spin'>

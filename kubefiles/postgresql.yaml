@@ -8,7 +8,6 @@ data:
     wal_level = 'replica'
 
 
-
 ---
 apiVersion: apps/v1
 kind: StatefulSet
@@ -16,7 +15,7 @@ metadata:
   name: postgres
 spec:
   serviceName: "postgres"
-  replicas: 3
+  replicas: 1
   selector:
     matchLabels:
       app: postgres
@@ -29,10 +28,6 @@ spec:
       - name: postgres
         image: postgres
         env:
-        - name: PATRONI_NAME
-          valueFrom:
-            fieldRef:
-              fieldPath: metadata.name
         - name: POSTGRES_DB
           value: "ecomdb"
         - name: POSTGRES_USER
@@ -55,9 +50,7 @@ spec:
         resources:
           requests:
             storage: 5Gi
-        storageClassName: "standard"
-        volumeMode: Filesystem
-
+        storageClassName: do-block-storage
 
 ---
 apiVersion: v1

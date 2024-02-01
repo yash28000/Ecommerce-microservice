@@ -26,7 +26,7 @@ export default function PageSlug({ params: { slug } }: PageProps) {
             </h1>
             <div className="grid grid-cols-2 items-center justify-center px-20 gap-10 w-full h-full">
                 <div className="flex items-center justify-center">
-                <img src={`http://localhost:8080/image/img?id=${data.id}&name=${data.name}&type=product`} className="w-[300px] rounded-md h-[400px] object-cover" />
+                <img src={`${process.env.NEXT_PUBLIC_API}image/img?id=${data.id}&name=${data.name}&type=product`} className="w-[300px] rounded-md h-[400px] object-cover" />
                 </div>
                 
                 <div className="flex flex-col items-start justify-center">
