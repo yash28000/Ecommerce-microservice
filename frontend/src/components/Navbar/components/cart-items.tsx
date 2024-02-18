@@ -26,7 +26,7 @@ export default function CartItems() {
     refetch()
    },[refetch])
     const handleDelete = async (id: number) => {
-        const data = await fetch(`http://localhost:8080/cart/cart?id=${id}`, {
+        const data = await fetch(`${process.env.NEXT_PUBLIC_API_URL}cart/cart?id=${id}`, {
             method: 'DELETE'
         }).then((res) => {
             return res.json()
@@ -95,7 +95,7 @@ const Cart_item = ({ params, handleDelete }: { params: CartData, handleDelete: (
 
     return data ? (
         <div className="flex items-center w-full gap-4 ">
-            <img src={`http://localhost:8080/image/img?id=${data[0]?.id}&name=${data[0]?.name}&type=product`} className="w-18 h-16 object-cover" />
+            <img src={`${process.env.NEXT_PUBLIC_API_URL}image/img?id=${data[0]?.id}&name=${data[0]?.name}&type=product`} className="w-18 h-16 object-cover" />
             <div className="flex items-center w-full justify-between">
                 <span className="flex flex-col items-start">
                     <p className='text-left'>{wordlimiter(data[0]?.name,30)}</p>

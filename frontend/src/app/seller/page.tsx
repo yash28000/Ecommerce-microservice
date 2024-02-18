@@ -44,7 +44,7 @@ export default function Seller_Page() {
     const handleSubmit = async(e:React.FormEvent<HTMLFormElement>) =>{
         console.log(formData)
         e.preventDefault()
-        const data = await fetch('http://localhost:8080/product/',{
+        const data = await fetch(`${process.env.NEXT_PUBLIC_API_URL}product/`,{
             method: 'POST',
             body: JSON.stringify(formData),
             headers:{
@@ -63,7 +63,7 @@ export default function Seller_Page() {
         if(uploadImg){
             form.append('file',uploadImg)
         }
-        const data = await fetch(`http://localhost:8080/image/img?id=${id}&name=${formData.name}&type=product`,{
+        const data = await fetch(`${process.env.NEXT_PUBLIC_API_URL}image/img?id=${id}&name=${formData.name}&type=product`,{
             method: 'POST',
             body: form
         })
